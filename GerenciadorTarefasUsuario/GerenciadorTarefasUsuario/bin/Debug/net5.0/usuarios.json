@@ -1,0 +1,21 @@
+[
+  {
+    "Email": "hugoolaitan@gmail.com",
+    "nome": "hugo",
+    "permissoes": "administrador",
+    "senha": "3218546"
+  },
+  {
+    "nome": "Gabi",
+    "Email": "Gabi@gmail.com",
+    "permissoes": "usuario basico",
+    "senha": "56465"
+  },
+  {
+    "nome": "andre",
+    "Email": "andre@gmail.com",
+    "permissoes": "administrador",
+    "senha": "32165"
+  }
+
+]
