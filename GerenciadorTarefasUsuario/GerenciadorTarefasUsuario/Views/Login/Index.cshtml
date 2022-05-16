@@ -1,0 +1,52 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<main class="form-signin">
+  <form id="form1" method="post" action="/Login/Register">
+    <h1 class="h3 mb-3 fw-normal">Por favor faça o seu login</h1>
+
+    <div class="form-floating">
+      <input type="nome"  required class="form-control" id="floatingInput" placeholder="Nome do usuario">
+    </div>
+    <div class="form-floating">
+      <input type="password"  required class="form-control" id="floatingPassword" placeholder="Senha">
+    </div>
+
+    <div class="checkbox mb-3">
+      <label>
+        @*<input type="checkbox" value="remember-me"> Remember me*@
+      </label>
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" >Entrar</button>
+    
+  </form>
+</main>
+
+<script type="text/javascript">
+    console.log($("#floatingInput").val())
+    $("#form1").submit(function (e) {
+        var dados = {User: $("#floatingInput").val(), Password: $("#floatingPassword").val()}
+        console.log(dados)
+        $.ajax({
+            url: '/Login/Register',
+            async: false,
+            type: 'POST',
+            data: dados,
+            datatype: 'json',
+            success: function (data, textStatus, jqXHR) {
+                var response = data;
+                var userName = $("#floatingInput").val();
+                console.log(response)
+
+                window.location.href = `/${response.controller}/Index/?UserId=${response.id}` ;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR + "-" + textStatus + "-" + errorThrown);
+            }
+        });
+        e.preventDefault();
+    });
+</script>

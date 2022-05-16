@@ -1,0 +1,308 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<main>
+    <div class="py-5 text-center">
+      <h2>Cadastra tarefas</h2>
+    </div>    
+      <div class="col-md-12 col-lg-12">
+        <form id="form1" method="post" action="/Task/saveTask">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="CadastroNome" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="floatingInput" placeholder="" required>
+              
+            </div>          
+
+            <div class="col-6">
+            <div class="form-group">
+                <label for="data-pagamento">Data</label>        
+                <div class="input-group date" data-date-format="dd/mm/yyyy">
+                  <input id="data" type="text" class="form-control" placeholder="dd/mm/yyyy">
+                  <div class="input-group-addon" >
+                    <span class="glyphicon glyphicon-th"></span>
+                  </div>
+                </div>
+            </div>
+          
+              <div class="invalid-feedback">
+                Insira uma data.
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="descricao" class="form-label">descrição</label>
+              <textarea type="text" class="form-control" id="descricao" placeholder="Descreva" required></textarea>
+              
+              <div class="invalid-feedback">
+                Por favor insira uma descricao.
+              </div>
+            </div>
+                    
+            <div class="col-6">
+              <label for="Concluida" class="form-label"></label>
+
+               <label class="list-group-item d-flex gap-2">
+                  <input id="concluida" class="form-check-input flex-shrink-0" type="checkbox" value="" checked="">
+                  <span  class="col-md-4">
+                        Concluida        
+                  </span>
+               </label>                
+            </div>
+                         
+          </div>
+
+          <hr class="my-4">  
+          <button class="w-100 btn btn-lg btn-primary" >Cadastar</button>
+        </form>
+      </div>
+     
+     <hr class="my-4">  
+     <div class="table-responsive">
+     <table id="tabela" class="table">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Data</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">concluida</th>
+          <th scope="col">Editar</th>
+          <th scope="col">Deletar</th>
+        </tr>
+      </thead>
+      <tbody>
+            @foreach (var task in Model){
+            <tr>
+                <td>@task.id</td>
+                <td>@task.nome</td>
+                <td>@task.data</td>
+                <td>@task.descricao</td>
+                <td>@task.concluida</td>
+                <td><svg data-toggle="modal" data-target="#modal" onclick="editar(this)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                </svg></td>
+                            <td><svg onclick="remover(this)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                </svg></td>
+            </tr>    
+
+            }
+          
+      </tbody>
+    </table>
+
+     </div>
+
+<!-- Modal -->
+        <form id="form2" method="post" action="/Task/editTask">
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="TituloModalCentralizado">Edita Tarefa <label id="titleId"/></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="editNome" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="editNome" placeholder="" required>
+              
+            </div>          
+
+            <div class="col-6">
+            <div class="form-group">
+                <label for="data-pagamento">Data</label> 
+                <div class="input-group date" data-date-format="dd/mm/yyyy">
+                  <input id="editData" type="text" class="form-control" placeholder="dd/mm/yyyy">
+                  <div class="input-group-addon" >
+                    <span class="glyphicon glyphicon-th"></span>
+                  </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="col-12">
+              <label for="editDescricao" class="form-label">descrição</label>
+              <textarea type="text" class="form-control" id="editDescricao" placeholder="Descreva" required></textarea>
+              <div class="invalid-feedback">
+                Por favor insira uma descricao.
+              </div>
+            </div>
+                    
+            <div class="col-6">
+              <label for="Concluida" class="form-label"></label>
+               <label class="list-group-item d-flex gap-2">
+                  <input id="concluidaEdit" class="form-check-input flex-shrink-0" type="checkbox" value="" checked="">
+                  <span  class="col-md-4">
+                        Concluida        
+                  </span>
+               </label>                
+            </div>                         
+          </div>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button class="btn btn-primary" >Salvar mudanças</button>
+      </div>
+    </div>
+  </div>
+</div>
+        </form>
+
+
+  </main>
+ 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<!-- Plugin pro Datapicker novo -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/js/bootstrap-datepicker.min.js'></script>
+<script type="text/javascript">
+    console.log($("#floatingInput").val())
+    $('.input-group.date').datepicker({format: "dd/mm/yyyy"});
+    function remover(item){
+        console.log("excluir")
+        var tr = $(item).closest('tr');
+        var dados = {TaskId: tr.find('td').eq(0).text()}
+        console.log(dados)
+        tr.fadeOut(400, function() {
+        tr.remove(); 
+        });
+
+        $.ajax({
+            url: `/Task/deleteTask`,
+            async: false,
+            type: 'DELETE',
+            data: dados,
+            datatype: 'json',
+            success: function (data, textStatus, jqXHR) {
+                console.log($("#tabela tbody"))
+                var response = data;
+                var userName = $("#floatingInput").val();
+                var html=[];
+                console.log("RESPOSTA: "+ response.length)
+                for (var i = 0; i < response.length; i++) {
+                         console.log(response[i]);
+                         var task = response[i];
+                         console.log(task.id)
+                         html.push(`<tr><td>${task.id}</td><td>${task.nome}</td><td>${task.data}</td><td>${task.descricao}</td><td>${task.concluida}<td><svg data-toggle="modal" data-target="#modal" onclick="editar(this)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+  <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+</svg></td><td><svg onclick="remover(this)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+  <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+</svg></td></tr>`)
+                }
+
+                $("#tabela tbody").html(html);
+                
+                //window.location.href = `/${response.controller}/Index/?UserId=${response.id}` ;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR + "-" + textStatus + "-" + errorThrown);
+            }
+        });
+    }
+    function editar(item){
+        console.log("editar")
+          var tableData = $(item).closest("tr").find("td:not(:last-child)").map(function(){
+              return $(this).text().trim();
+           }).get();
+        console.log(tableData);
+        var id = tableData[0]
+        var nome = tableData[1]
+        var data = tableData[2]
+        var descricao = tableData[3]
+        var concluida = tableData[4]
+        var titleId= document.getElementById('titleId');
+        titleId.innerHTML = id
+        $("#editNome").val(nome)
+        $("#editData").val(data)
+        $("#editDescricao").val(descricao)
+        $("#editConcluida").val(concluida)
+
+    }
+
+    function limpaTabela(){        
+        var tr = $("#tabela tbody").remove();
+        tr.fadeOut(400, function() {
+        tr.remove(); 
+        });
+    }
+    $("#form1").submit(function (e) {
+        var data = $("#data").val().replace("/", "");
+        var dados = {nome: $("#floatingInput").val(), data: data.replace("/", ""), descricao: $("#descricao").val(), concluida: $("#concluida").prop('checked')}
+        console.log(dados)
+        $.ajax({
+            url: '/Task/saveTask',
+            async: false,
+            type: 'POST',
+            data: dados,
+            datatype: 'json',
+            success: function (data, textStatus, jqXHR) {
+                var response = data;
+                var userName = $("#floatingInput").val();
+                console.log("RESPOSTA: "+response.nome)
+                $("#tabela>tbody").append(`<tr><td>${response.id}</td><td>${response.nome}</td><td>${response.data}</td><td>${response.descricao}</td><td>${response.concluida}<td><svg data-toggle="modal" data-target="#modal" onclick="editar(this)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+  <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+</svg></td><td><svg onclick="remover(this)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+  <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+</svg></td></tr>`);
+                //window.location.href = `/${response.controller}/Index/?UserId=${response.id}` ;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR + "-" + textStatus + "-" + errorThrown);
+            }
+        });
+        e.preventDefault();
+    });
+    $("#form2").submit(function (e) {
+        var data = $("#editData").val().replace("/", "");
+        
+        var dados = {id: $("#titleId").text(), nome: $("#editNome").val(), data: data.replace("/", ""), descricao: $("#editDescricao").val(), concluida: $("#concluidaEdit").prop('checked')}
+        console.log(dados)
+        $.ajax({
+            url: '/Task/editTask',
+            async: false,
+            type: 'PUT',
+            data: dados,
+            datatype: 'json',
+            success: function (data, textStatus, jqXHR) {
+                console.log($("#tabela tbody"))
+                var response = data;
+                var userName = $("#floatingInput").val();
+                var html=[];
+                console.log("RESPOSTA: "+ response.length)
+                for (var i = 0; i < response.length; i++) {
+                         console.log(response[i]);
+                         var task = response[i];
+                         console.log(task.id)
+                         html.push(`<tr><td>${task.id}</td><td>${task.nome}</td><td>${task.data}</td><td>${task.descricao}</td><td>${task.concluida}<td><svg data-toggle="modal" data-target="#modal" onclick="editar(this)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+  <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+</svg></td><td><svg onclick="remover(this)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+  <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+</svg></td></tr>`)
+                }
+
+                $("#tabela tbody").html(html);
+                
+                //window.location.href = `/${response.controller}/Index/?UserId=${response.id}` ;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR + "-" + textStatus + "-" + errorThrown);
+            }
+        });
+        e.preventDefault();
+    });
+</script>

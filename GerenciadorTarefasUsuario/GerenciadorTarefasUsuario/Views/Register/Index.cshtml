@@ -1,0 +1,79 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<main>
+    <div class="py-5 text-center">
+      <h2>Cadastro</h2>
+    </div>    
+      <div class="col-md-12 col-lg-12">
+        <form id="form1" method="post" action="/Register/saveUser">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="CadastroNome" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="floatingInput" placeholder="" required>
+              
+            </div>          
+
+            <div class="col-6">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="floatingEmail" placeholder="you@example.com" required>
+              <div class="invalid-feedback">
+                Insira um endereço de e-mail válido para atualizações de envio.
+              </div>
+            </div>
+
+            <div class="col-6">
+              <label for="Senha" class="form-label">Senha</label>
+              <input type="text" class="form-control" id="floatingPassword" placeholder="654154" required>
+              <div class="invalid-feedback">
+                Por favor insira sua senha
+              </div>
+            </div>
+                    
+            <div class="col-6">
+                <label for="Permissao" class="form-label">Permissao</label>
+                <select class="form-select col-12" required data-validation-required-message="Por favor, selecione uma permissão." id="floatingPermissoes" required>
+                <option value="">Escolha...</option>
+                <option>Administrador</option>
+                <option>usuario basico</option>
+                </select>
+                
+            </div>
+                         
+          </div>
+
+          <hr class="my-4">  
+          <button class="w-100 btn btn-lg btn-primary" >Cadastar</button>
+        </form>
+      </div>    
+  </main>
+ 
+
+<script type="text/javascript">
+    console.log($("#floatingInput").val())
+    $("#form1").submit(function (e) {
+        var dados = {nome: $("#floatingInput").val(), senha: $("#floatingPassword").val(), permissoes: $("#floatingPermissoes").val(), Email: $("#floatingEmail").val()}
+        console.log(dados)
+        $.ajax({
+            url: '/Register/saveUser',
+            async: false,
+            type: 'POST',
+            data: dados,
+            datatype: 'json',
+            success: function (data, textStatus, jqXHR) {
+                var response = data;
+                var userName = $("#floatingInput").val();
+                console.log(response)
+
+                window.location.href = `/${response.controller}/Index/?UserId=${response.id}` ;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR + "-" + textStatus + "-" + errorThrown);
+            }
+        });
+        e.preventDefault();
+    });
+</script>
